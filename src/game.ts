@@ -1,5 +1,7 @@
 import Snake, { Direction } from "./snake";
 import Vector from "./vector";
+import Food from "./food";
+import Random from "./random";
 
 export enum KEYS {
     ARROW_LEFT  = 37,
@@ -16,6 +18,7 @@ export default class Game {
 
     private context: CanvasRenderingContext2D;
     private snake: Snake;
+    private food: Food;
     private timestamp?: number = 0;
 
     private nextKey: number | null = null;
@@ -23,6 +26,7 @@ export default class Game {
     constructor(canvas: HTMLCanvasElement) {
         this.context = canvas.getContext('2d');
         this.snake = new Snake(Game.SCALE, new Vector(0, 0));
+        this.placeFood();
     }
 
     start() {
@@ -31,6 +35,13 @@ export default class Game {
 
         this.attachKeyboard();
         this.update();
+    }
+
+    private placeFood() {
+        const x = Random.Generate(0, Game.WIDTH - 1);
+        const y = Random.Generate(0, Game.HEIGHT - 1);
+
+        this.food = new Food(Game.SCALE, new Vector(x, y));
     }
 
     private attachKeyboard() {
@@ -58,9 +69,19 @@ export default class Game {
 
             this.snake.move();
             this.checkArenaBoundaries();
+            this.checkFoodCollision();
         }
 
+        this.food.draw(this.context);
+
         requestAnimationFrame(this.update.bind(this));
+    }
+
+    private checkFoodCollision() {
+        if(this.snake.position.equals(this.food.position)) {
+            this.snake.eat(this.food);
+            this.placeFood();
+        }
     }
 
     private checkKey(): void {

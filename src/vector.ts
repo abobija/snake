@@ -6,4 +6,13 @@ export default class Vector {
         this.x = x;
         this.y = y;
     }
+
+    set(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+    }
+
+    equals(v: Vector): boolean {
+        return this.x == v.x && this.y == v.y;
+    }
 }
