@@ -74,11 +74,8 @@ export default class Game {
 
         if(timestamp - this.timestamp >= this.settings.speed) {
             this.timestamp = timestamp;
-
-            if(this.nextKey != null) {
-                this.checkKey();
-                this.nextKey = null;
-            }
+            
+            this.checkKey();
 
             if(this.snake.move(this.settings.width - 1, this.settings.height - 1)) {
                 console.log('Game over');
@@ -94,6 +91,10 @@ export default class Game {
     }
 
     private checkKey(): void {
+        if(this.nextKey == null) {
+            return;
+        }
+
         switch(this.nextKey) {
             case KEYS.ARROW_LEFT:
                 this.snake.direction = Direction.LEFT;
@@ -108,6 +109,8 @@ export default class Game {
                 this.snake.direction = Direction.DOWN;
                 break;
         }
+
+        this.nextKey = null;
     }
 
     private checkFoodCollision(): void {
