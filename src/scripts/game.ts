@@ -11,9 +11,9 @@ export enum KEYS {
 }
 
 export default class Game {
-    static WIDTH: number = 70;
-    static HEIGHT: number = 50;
-    static SCALE: number = 10;
+    static WIDTH: number = 40;
+    static HEIGHT: number = 30;
+    static SCALE: number = 15;
     static SPEED: number = 50;
 
     private context: CanvasRenderingContext2D;
