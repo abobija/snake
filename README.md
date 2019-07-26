@@ -15,3 +15,7 @@ npm run dev
 ```
 
 Open [`http://localhost:1234`](http://localhost:1234).
+
+## Author
+
+[Alija Bobija](https://abobija.com)
