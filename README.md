@@ -1,5 +1,7 @@
-# snake
-Snake game written in Typescript
+# [snake](https://abobija.com/snake)
+Snake game written in Typescript.
+
+Yea. I was bored... :joy:
 
 ## Demo
 
