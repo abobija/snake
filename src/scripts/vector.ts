@@ -7,7 +7,7 @@ export default class Vector {
         this.y = y;
     }
 
-    set(x: number, y: number) {
+    set(x: number, y: number): void {
         this.x = x;
         this.y = y;
     }

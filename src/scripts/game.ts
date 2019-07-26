@@ -41,7 +41,7 @@ export default class Game {
         this.snake = new Snake(this.settings.scale, new Vector(0, 0));
     }
 
-    start() {
+    start(): void {
         this.canvas.width = this.settings.width * this.settings.scale;
         this.canvas.height = this.settings.height * this.settings.scale;
 
@@ -50,14 +50,14 @@ export default class Game {
         this.update();
     }
 
-    private placeFood() {
+    private placeFood(): void {
         const x = Random.Generate(0, this.settings.width - 1);
         const y = Random.Generate(0, this.settings.height - 1);
 
         this.food = new Food(this.settings.scale, new Vector(x, y));
     }
 
-    private attachKeyboard() {
+    private attachKeyboard(): void {
         document.addEventListener('keydown', e => {
             if(this.nextKey == null || this.nextKey != e.keyCode) {
                 this.nextKey = e.keyCode;
@@ -65,7 +65,7 @@ export default class Game {
         });
     }
 
-    update(timestamp?: number) {
+    update(timestamp?: number): void {
         timestamp = timestamp || 0;
 
         this.context.fillStyle = 'black';
@@ -80,21 +80,17 @@ export default class Game {
                 this.nextKey = null;
             }
 
-            this.snake.move();
-            this.checkArenaBoundaries();
+            if(this.snake.move(this.settings.width - 1, this.settings.height - 1)) {
+                console.log('Game over');
+                return;
+            }
+
             this.checkFoodCollision();
         }
 
         this.food.draw(this.context);
 
         requestAnimationFrame(this.update.bind(this));
-    }
-
-    private checkFoodCollision() {
-        if(this.snake.position.equals(this.food.position)) {
-            this.snake.eat(this.food);
-            this.placeFood();
-        }
     }
 
     private checkKey(): void {
@@ -114,21 +110,10 @@ export default class Game {
         }
     }
 
-    private checkArenaBoundaries(): void {
-        if(this.snake.position.x < 0) {
-            this.snake.position.x = this.settings.width - 1;
-        }
-
-        if(this.snake.position.y < 0) {
-            this.snake.position.y = this.settings.height - 1;
-        }
-
-        if(this.snake.position.x > this.settings.width - 1) {
-            this.snake.position.x = 0;
-        }
-
-        if(this.snake.position.y > this.settings.height - 1) {
-            this.snake.position.y = 0;
+    private checkFoodCollision(): void {
+        if(this.snake.position.equals(this.food.position)) {
+            this.snake.eat(this.food);
+            this.placeFood();
         }
     }
 

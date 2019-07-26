@@ -25,7 +25,13 @@ export default class Snake extends Scalable {
         this.tail.forEach(part => part.draw(context));
     }
 
-    move(): void {
+    /**
+     * 
+     * @param maxX width of arena - 1
+     * @param maxY height of arena - 1
+     * @returns true if there is collision with tail
+     */
+    move(maxX: number, maxY: number): boolean {
         let x = this.position.x;
         let y = this.position.y;
 
@@ -44,8 +50,27 @@ export default class Snake extends Scalable {
                 break;
         }
 
-        for(let i: number = 0; i < this.tail.length; i++) {
-            const tpart = this.tail[i];
+        if(this.position.x < 0) {
+            this.position.x = maxX;
+        }
+
+        if(this.position.y < 0) {
+            this.position.y = maxY;
+        }
+
+        if(this.position.x > maxX) {
+            this.position.x = 0;
+        }
+
+        if(this.position.y > maxY) {
+            this.position.y = 0;
+        }
+
+        for(let tpart of this.tail) {
+            if(this.position.equals(tpart.position)) {
+                return true;
+            }
+
             const xtmp = tpart.position.x;
             const ytmp = tpart.position.y;
 
@@ -54,6 +79,8 @@ export default class Snake extends Scalable {
             x = xtmp;
             y = ytmp;
         }
+
+        return false;
     }
 
     eat(food: Food): void {

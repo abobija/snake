@@ -9,7 +9,7 @@ export default class Scalable {
         this.position = position;
     }
 
-    draw(context: CanvasRenderingContext2D) {
+    draw(context: CanvasRenderingContext2D): void {
         context.fillRect(
             this.position.x * this.scale,
             this.position.y * this.scale,
