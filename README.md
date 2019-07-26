@@ -1,6 +1,10 @@
 # snake
 Snake game written in Typescript
 
+## Demo
+
+[https://abobija.com/snake](https://abobija.com/snake)
+
 ## Usage
 
 ```
