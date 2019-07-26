@@ -1,2 +1,2 @@
 # snake
-Snake game coded in Typescript
+Snake game written in Typescript
