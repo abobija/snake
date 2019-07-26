@@ -10,38 +10,51 @@ export enum KEYS {
     ARROW_DOWN  = 40
 }
 
-export default class Game {
-    static WIDTH: number = 40;
-    static HEIGHT: number = 30;
-    static SCALE: number = 15;
-    static SPEED: number = 50;
+export interface GameSettings {
+    width?: number;
+    height?: number;
+    scale?: number;
+    speed?: number;
+}
 
+const DefaultSettings: GameSettings = {
+    width: 40,
+    height: 30,
+    scale: 15,
+    speed: 50
+}
+
+export default class Game {
     private context: CanvasRenderingContext2D;
+    private settings: GameSettings;
+
     private snake: Snake;
     private food: Food;
     private timestamp?: number = 0;
 
     private nextKey: number | null = null;
 
-    constructor(canvas: HTMLCanvasElement) {
+    constructor(canvas: HTMLCanvasElement, settings: GameSettings = {}) {
         this.context = canvas.getContext('2d');
-        this.snake = new Snake(Game.SCALE, new Vector(0, 0));
-        this.placeFood();
+        this.settings = { ...DefaultSettings, ...settings };
+
+        this.snake = new Snake(this.settings.scale, new Vector(0, 0));
     }
 
     start() {
-        this.canvas.width = Game.WIDTH * Game.SCALE;
-        this.canvas.height = Game.HEIGHT * Game.SCALE;
+        this.canvas.width = this.settings.width * this.settings.scale;
+        this.canvas.height = this.settings.height * this.settings.scale;
 
         this.attachKeyboard();
+        this.placeFood();
         this.update();
     }
 
     private placeFood() {
-        const x = Random.Generate(0, Game.WIDTH - 1);
-        const y = Random.Generate(0, Game.HEIGHT - 1);
+        const x = Random.Generate(0, this.settings.width - 1);
+        const y = Random.Generate(0, this.settings.height - 1);
 
-        this.food = new Food(Game.SCALE, new Vector(x, y));
+        this.food = new Food(this.settings.scale, new Vector(x, y));
     }
 
     private attachKeyboard() {
@@ -59,7 +72,7 @@ export default class Game {
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.snake.draw(this.context);
 
-        if(timestamp - this.timestamp >= Game.SPEED) {
+        if(timestamp - this.timestamp >= this.settings.speed) {
             this.timestamp = timestamp;
 
             if(this.nextKey != null) {
@@ -103,18 +116,18 @@ export default class Game {
 
     private checkArenaBoundaries(): void {
         if(this.snake.position.x < 0) {
-            this.snake.position.x = Game.WIDTH - 1;
+            this.snake.position.x = this.settings.width - 1;
         }
 
         if(this.snake.position.y < 0) {
-            this.snake.position.y = Game.HEIGHT - 1;
+            this.snake.position.y = this.settings.height - 1;
         }
 
-        if(this.snake.position.x > Game.WIDTH - 1) {
+        if(this.snake.position.x > this.settings.width - 1) {
             this.snake.position.x = 0;
         }
 
-        if(this.snake.position.y > Game.HEIGHT - 1) {
+        if(this.snake.position.y > this.settings.height - 1) {
             this.snake.position.y = 0;
         }
     }
