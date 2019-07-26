@@ -3,6 +3,8 @@ import Vector from "./vector";
 import Food from "./food";
 import Random from "./random";
 
+import { EventEmitter } from 'events';
+
 export enum KEYS {
     ARROW_LEFT  = 37,
     ARROW_UP    = 38,
@@ -24,7 +26,7 @@ const DefaultSettings: GameSettings = {
     speed: 50
 }
 
-export default class Game {
+export default class Game extends EventEmitter  {
     private context: CanvasRenderingContext2D;
     private settings: GameSettings;
 
@@ -34,7 +36,11 @@ export default class Game {
 
     private nextKey: number | null = null;
 
+    private _score: number = 0;
+
     constructor(canvas: HTMLCanvasElement, settings: GameSettings = {}) {
+        super();
+
         this.context = canvas.getContext('2d');
         this.settings = { ...DefaultSettings, ...settings };
 
@@ -78,7 +84,7 @@ export default class Game {
             this.checkKey();
 
             if(this.snake.move(this.settings.width - 1, this.settings.height - 1)) {
-                console.log('Game over');
+                this.emit('over', this._score);
                 return;
             }
 
@@ -116,6 +122,7 @@ export default class Game {
     private checkFoodCollision(): void {
         if(this.snake.position.equals(this.food.position)) {
             this.snake.eat(this.food);
+            this.emit('score', ++this._score);
             this.placeFood();
         }
     }
