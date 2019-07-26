@@ -11,9 +11,14 @@
     "type": "git",
     "url": "git+https://github.com/abobija/snake.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "snake",
+    "game",
+    "typescript",
+    "nodejs"
+  ],
+  "author": "Alija Bobija",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/abobija/snake/issues"
   },
@@ -22,6 +27,7 @@
     "@types/events": "^3.0.0",
     "events": "^3.0.0",
     "parcel-bundler": "^1.12.3",
+    "sass": "^1.22.7",
     "typescript": "^3.5.3"
   }
 }

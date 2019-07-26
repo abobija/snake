@@ -1,14 +1,13 @@
 import Game from './scripts/game';
 
+import './style/main.scss';
+
 const canvas: HTMLCanvasElement = document.getElementById('arena') as HTMLCanvasElement;
 const game = new Game(canvas);
 
-game.on('score', score => {
-    console.log(score);
-});
+const score: HTMLElement = document.getElementById('score') as HTMLElement;
 
-game.on('over', score => {
-    console.log('Game over. Score:', score);
-});
+game.on('score', s => score.innerHTML = s);
+game.on('over', s => alert('Game over!\nRefresh page for new game.'));
 
 game.start();
